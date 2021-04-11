@@ -95,7 +95,7 @@ public abstract class Scanner<T> {
 
         for (Pair<String, Map<String, String>> sourceFile : sourceCode) {
             String sourceCodeContent = sourceFile.getLeft();
-            sourceCodeContent = sourceCodeContent.replaceAll("[^\\x00-\\x7F]+", "x");
+            sourceCodeContent = sourceCodeContent.replaceAll("[^\\p{ASCII}]+", "x");
             Map<String, String> attributes = sourceFile.getRight();
 
             try {
@@ -106,7 +106,7 @@ public abstract class Scanner<T> {
                 Optional<String> packageName = cu.getPackageDeclaration().map((p) -> p.getName().asString());
 
                 if (packageName.isPresent()) {
-                    String packagePrefix = packageName.get().replaceAll("[.]", File.separator) + "/";
+                    String packagePrefix = packageName.get().replace(".", File.separator) + File.separator;
                     String sourceDir = FilenameUtils.getPath(sourceFileName);
                     String baseSourceDir = sourceDir.replace(packagePrefix, "");
                     String finalSourceBaseDir = baseSourceDir.replace(".", projectPath);
@@ -156,7 +156,7 @@ public abstract class Scanner<T> {
 
         for (Pair<String, Map<String, String>> sourceFile : sourcesAndAttributes) {
             String sourceCode = sourceFile.getLeft();
-            sourceCode = sourceCode.replaceAll("[^\\x00-\\x7F]+", "x");
+            sourceCode = sourceCode.replaceAll("[^\\p{ASCII}]+", "x");
             Map<String, String> attributes = sourceFile.getRight();
 
             try {

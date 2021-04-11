@@ -95,6 +95,7 @@ public abstract class Scanner<T> {
 
         for (Pair<String, Map<String, String>> sourceFile : sourceCode) {
             String sourceCodeContent = sourceFile.getLeft();
+            sourceCodeContent = sourceCodeContent.replaceAll("[^\\x00-\\x7F]+", "x");
             Map<String, String> attributes = sourceFile.getRight();
 
             try {
@@ -116,7 +117,7 @@ public abstract class Scanner<T> {
 
             } catch (ParseProblemException e) {
                 String file = attributes.get("sourceFile");
-                logger.warn("Unable to parse code from file %s, ignoring\n", file);
+                logger.warn("Unable to parse code from file {}, ignoring\n", file);
                 logger.warn(e.getProblems().toString());
             }
         }
@@ -131,7 +132,7 @@ public abstract class Scanner<T> {
             try {
                 combinedTypeSolver.add(new JavaParserTypeSolver(sourceDir));
             } catch (IllegalStateException e) {
-                logger.warn("Unable to parse code from dir %s, ignoring\n", sourceDir);
+                logger.warn("Unable to parse code from dir {}, ignoring\n", sourceDir);
                 StringWriter sw = new StringWriter();
                 e.printStackTrace(new PrintWriter(sw));
                 logger.warn(sw.toString());
@@ -155,6 +156,7 @@ public abstract class Scanner<T> {
 
         for (Pair<String, Map<String, String>> sourceFile : sourcesAndAttributes) {
             String sourceCode = sourceFile.getLeft();
+            sourceCode = sourceCode.replaceAll("[^\\x00-\\x7F]+", "x");
             Map<String, String> attributes = sourceFile.getRight();
 
             try {
@@ -173,7 +175,7 @@ public abstract class Scanner<T> {
                 }
             } catch (ParseProblemException e) {
                 String file = attributes.get("sourceFile");
-                logger.warn("Unable to parse code from file %s, ignoring\n", file);
+                logger.warn("Unable to parse code from file {], ignoring\n", file);
                 logger.warn(e.getProblems().toString());
             }
         }
